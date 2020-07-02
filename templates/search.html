@@ -1,0 +1,26 @@
+{% extends "profile.html" %}
+
+{% block search %}
+
+<!-- <input type="submit" style="position: absolute; left: -9999px; height: 1px; width: 1px" tabindex="-1" /> -->
+		<h4 class="title" style="color: grey; margin-top: 20px; margin-bottom: 20px"><u>Search Results</u></h4>
+		<table>
+			<tr>
+				<th style="font-size: 25px; padding-bottom: .25rem; padding-right: 28px">ISBN</th>
+				<th style="font-size: 25px; padding-bottom: .25rem; padding-right: 28px">Title</th>
+				<th style="font-size: 25px; padding-bottom: .25rem;">Author</th>
+			</tr>
+			{% for book in books %}
+			<tr>
+				<td style="font-size: 20px; padding-bottom: .25rem; padding-right: 28px; color: purple">
+					<a href="{{ url_for('book_info', book_isbn=book.isbn) }}"> {{book.isbn}} </a>
+				</td>
+				<td style="font-size: 20px; padding-bottom: .25rem; padding-right: 28px">{{book.title}}</td>
+				<td style="font-size: 20px; padding-bottom: .25rem">{{book.author}}</td>
+			</tr>
+			{% else %}
+				<td style="font-size: 20px">No matches.</td>
+			{% endfor %}
+		</table>
+
+{% endblock %}

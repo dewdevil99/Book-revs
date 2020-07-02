@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block navigation %}
+<a href="/profile" class="navbar-item"> Home </a>
+<a href="/logout" class="navbar-item"> Logout </a>
+{% endblock %}
+
+{% block content %}
+
+<div class="column is-6 is-offset-3">
+	<div class="box">
+		<a href="{{ url_for('profile') }}" style="color: blue"> Back </a>
+		<h3 class="title" align="center" style="color: grey; padding-bottom: .75rem">Book Details </h3>
+		<h4 class="subtitle" style="color: grey">Book Title : {{bookInfo.title}} </h4>
+		<h4 class="subtitle" style="color: grey">ISBN : {{bookInfo.isbn}} </h4>
+		<h4 class="subtitle" style="color: grey">Author : {{bookInfo.author}} </h4>
+		<h4 class="subtitle" style="color: grey">Year of publication : {{bookInfo.year}} </h4>
+		<h4 class="subtitle" style="color: grey">Goodreads rating : {{ratingInfo['average_rating']}}/5 ({{ratingInfo['work_ratings_count']}} Reviews)</h4>
+		{% if user_rating.round != None %}
+		<h4 class="subtitle" style="color: grey">User Rating : {{user_rating.round}}/5 ({{user_rating.count}} Reviews)</h4>
+		<h4 class="subtitle" style="color: blue"><a href="{{ url_for('book_reviews', book_isbn=bookInfo.isbn) }}"> View reviews </a></h4>
+		{% else %}
+		<h4 class="subtitle" style="color: grey">User Rating : No Reviews given</h4>
+		{% endif %}
+		
+		{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+		{% if not revgiven %}
+		<h4 class="title" style="color: grey; padding-top: .75rem">Submit a review : </h4>
+		<form action="{{ url_for('book_info', book_isbn=bookInfo.isbn) }}" method="POST">
+			<div class="field">
+				<div class="control">
+					<h4 class="subtitle" style="color: grey">Your rating : 
+					<input type="radio" name="options" value="1">
+					<input type="radio" name="options" value="2">
+					<input type="radio" name="options" value="3">
+					<input type="radio" name="options" value="4">
+					<input type="radio" name="options" value="5"><br></h4>
+					<textarea class="textarea" name="opinion" rows="4" style="width: 100%; font-size: 16px" placeholder="Enter your review..." required="required"></textarea>
+				</div>
+			</div>
+			<button class="button is-block is-info is-large">Submit</button>
+		</form>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}
